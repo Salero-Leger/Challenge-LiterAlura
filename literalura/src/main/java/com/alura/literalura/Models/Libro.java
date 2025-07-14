@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Libros {
+public class Libro {
     private @JsonAlias("id") Long id;
     private @JsonAlias("title") String titulo;
     private @JsonAlias("subjects") List<String> temas;
@@ -15,9 +15,9 @@ public class Libros {
     private @JsonAlias("languages")List<String> lenguajes;
 
 
-    public Libros(){}
+    public Libro(){}
 
-    public Libros(Libros libros) {
+    public Libro(Libro libros) {
         this.id = libros.getId();
         this.titulo = libros.getTitulo();
         this.temas = libros.getTemas();
