@@ -1,38 +1,66 @@
 package com.alura.literalura.Models;
 
+import com.alura.literalura.Services.StringListConverter;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
+
+@Entity
+@Table(name = "libros")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Libro {
-    private @JsonAlias("id") Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idDB;
+
+    @Column(unique = true)
     private @JsonAlias("title") String titulo;
+
+    @Convert(converter = StringListConverter.class)
+    @Column(length = 5000)
     private @JsonAlias("subjects") List<String> temas;
-    private @JsonAlias("authors")List<Autores> autores;
-    private @JsonAlias("summaries")List<String> sinopsis;
-    private @JsonAlias("download_count")Integer cantidadDescargas;
-    private @JsonAlias("languages")List<String> lenguajes;
 
 
-    public Libro(){}
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "libros_autores",
+            joinColumns = @JoinColumn(name = "libro_id"),
+            inverseJoinColumns = @JoinColumn(name = "autor_id")
+    )
+    private @JsonAlias("authors") List<Autores> autores = new ArrayList<>();
 
-    public Libro(Libro libros) {
-        this.id = libros.getId();
-        this.titulo = libros.getTitulo();
-        this.temas = libros.getTemas();
-        this.autores = libros.getAutores();
-        this.sinopsis = libros.getSinopsis();
-        this.cantidadDescargas = libros.getCantidadDescargas();
-        this.lenguajes = libros.getLenguajes();
+    @Convert(converter = StringListConverter.class)
+    @Column(length = 5000)
+    private @JsonAlias("summaries") List<String> sinopsis;
+
+    private @JsonAlias("download_count") Integer cantidadDescargas;
+
+    @Convert(converter = StringListConverter.class)
+    @Column(length = 5000)
+    private @JsonAlias("languages") List<String> lenguajes;
+
+    public Libro() {}
+
+    public Libro(String titulo, List<String> temas, List<String> sinopsis,
+                 Integer cantidadDescargas, List<String> lenguajes) {
+        this.titulo = titulo;
+        this.temas = temas;
+        this.sinopsis = sinopsis;
+        this.cantidadDescargas = cantidadDescargas;
+        this.lenguajes = lenguajes;
+        this.autores = new ArrayList<>();
     }
 
-    public Long getId() {
-        return id;
+    // Getters y setters
+    public Long getIdDB() {
+        return idDB;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdDB(Long idDB) {
+        this.idDB = idDB;
     }
 
     public String getTitulo() {
@@ -85,8 +113,8 @@ public class Libro {
 
     @Override
     public String toString() {
-        return "Libros{" +
-                "id=" + id +
+        return "Libro{" +
+                "id=" + idDB +
                 ", titulo='" + titulo + '\'' +
                 ", temas=" + temas +
                 ", autores=" + autores +
@@ -96,6 +124,3 @@ public class Libro {
                 '}';
     }
 }
-
-
-

@@ -11,6 +11,14 @@ public class Libros {
 
     }
 
+    public List<Libro> getResultados() {
+        return resultados;
+    }
+
+    public void setResultados(List<Libro> resultados) {
+        this.resultados = resultados;
+    }
+
     @Override
     public String toString() {
         return "Libros{" +

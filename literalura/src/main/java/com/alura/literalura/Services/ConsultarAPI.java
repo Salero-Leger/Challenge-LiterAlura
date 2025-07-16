@@ -9,15 +9,14 @@ import java.net.http.HttpResponse;
 
 public class ConsultarAPI {
 
-    private final String URL_GUTENDEX = "https://gutendex.com";
+    private final String URL_GUTENDEX = "https://gutendex.com/books";
     private final String BUSQUEDA_LIBRO = "/books?search=";
-    private final String PRUEBA_LIBRO = "/books";
 
-    public String hacerConsultaAPI(String url){
+    public String hacerConsultaAPI(String texto){
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL)
                 .build();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(URI.create(URL_GUTENDEX + texto))
                 .build();
         HttpResponse<String> response = null;
         try {
@@ -31,4 +30,5 @@ public class ConsultarAPI {
         String json = response.body();
         return json;
     }
+
 }
